@@ -19,6 +19,7 @@ def test_add():
 def test_sub():
     assert sub(4, 2) == 2
 
+@pytest.mark.xfail(reason="it is for failure demo")
 def test_fail():
     assert sub(4, 2) == 1
 
@@ -30,7 +31,7 @@ def test_skip():
 def test_expected_fail():
     assert add(2, 2) == 5
 
-# @pytest.mark.error
+@pytest.mark.xfail(reason="this test raises an exception")
 def test_error():
     from src import calc
     calc.multiply(2, 3)  
