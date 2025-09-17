@@ -1,0 +1,36 @@
+name: Run Pytest # The name of this workflow. (will show up in the Actions tab)
+
+on:
+  push:
+    branches: [ "main" ]   # trigger workflow when code is pushed to the main branch
+  pull_request:
+    branches: [ "main" ]   # Also trigger when a pull request targets the main branch
+
+jobs:
+  test: # define a job name (you can name it anything)
+    runs-on: ubuntu-latest # run on a virtual machine with Ubuntu OS
+
+    steps:  # steps represent a sequence of tasks that will be executed as part of the job
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      # This step checks out your repository under $GITHUB_WORKSPACE, so your job can access it
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10" 
+      # This step sets up a Python environment with the specified version
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt || true
+        pip install pytest
+      # Install all project dependencies from requirements.txt (if it exists).
+      # The "|| true" means: even if requirements.txt doesn't exist, continue.
+      # Finally, install pytest to run the tests.
+
+    - name: Run tests
+      run: |
+        pytest -v
+      # Run pytest in verbose mode (-v) to show detailed test results.
+      # If any test fails, the job will fail and be marked as "red" in GitHub Actions
